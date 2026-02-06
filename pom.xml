@@ -100,7 +100,7 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Releases Nexus Repository</name>
-	      <url>http://18.234.163.250:8081/repository/Release/url>
+	      <url>http://18.234.163.250:8081/repository/Release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
