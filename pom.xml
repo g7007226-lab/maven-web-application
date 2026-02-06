@@ -31,18 +31,13 @@
 
 	</properties>
 
-	<scm>
-    <connection>scm:git:ssh:https://github.com/g7007226-lab/maven-web-application.git</connection>
-    <developerConnection>scm:git:ssh:git@github.com:g7007226-lab/maven-web-application.git</developerConnection>
-    <url>https://github.com/g7007226-lab/maven-web-application.git</url>
-</scm>
-<!--
-	<scm>
+<scm>
     <connection>scm:git:ssh://git@github.com/g7007226-lab/maven-web-application.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/g7007226-lab/maven-web-application.git</developerConnection>
     <url>https://github.com/g7007226-lab/maven-web-application</url>
+    <tag>HEAD</tag>
 </scm>
--->
+
 	<dependencies>
 		
 		<dependency>
