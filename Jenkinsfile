@@ -1,84 +1,46 @@
-pipeline
-{
-  agent any
-  
-  tools
-  {
-    maven 'Maven_3.8.2'
-  }
-  
-  triggers
-  {
-    pollSCM('* * * * *')
-  }
-  
-  options
-  {
-    timestamps()
-    buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5'))
-  }
-  
-  stages
-  {
-    stage('Checkout Code from GitHub')
-    {
-      steps()
-      {
-        git branch: 'development', credentialsId: '957b543e-6f77-4cef-9aec-82e9b0230975', url: 'https://github.com/devopstrainingblr/maven-web-application-1.git'
-      }
-    }
-    
-    stage('Build Project')
-    {
-      steps()
-      {
-        sh "mvn clean package"
-      }
-    }
-    
-    stage('Execute SonarQube Report')
-    {
-      steps()
-      {
-        sh "mvn clean sonar:sonar"
-      }
-    }
-    
-    stage('Upload Artifacts to Sonatype Nexus')
-    {
-      steps()
-      {
-        sh "mvn clean deploy"
-      }
-    }
-    
-    stage('Deploy Application to Tomcat')
-    {
-      steps()
-      {
-        sshagent(['bfe1b3c1-c29b-4a4d-b97a-c068b7748cd0'])
-        {
-          sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@35.154.190.162:/opt/apache-tomcat-9.0.50/webapps/"
-        }
-      }
-    }
-  }
+pipeline {
+agent any
+tools {
+    maven "Suji" } // maven3.9.12 version configured as Suji
+options {
+  timestamps
+}
 
-post
-{
-  success
-  {
-    emailext to: 'devopstrainingblr@gmail.com,mithuntechnologies@yahoo.com',
-    subject: "Pipeline Build is Over Build # is ${env.BUILD_NUMBER} and Build Status is ${currentBuild.result}",
-    body: "Pipeline Build is Over Build # is ${env.BUILD_NUMBER} and Build Status is ${currentBuild.result}",
-    replyTo: 'devopstrainingblr@gmail.com'
-  }
-  failure
-  {
-    emailext to: 'devopstrainingblr@gmail.com,mithuntechnologies@yahoo.com',
-    subject: "Pipeline Build is Over Build # is ${env.BUILD_NUMBER} and Build Status is ${currentBuild.result}",
-    body: "Pipeline Build is Over Build # is ${env.BUILD_NUMBER} and Build Status is ${currentBuild.result}",
-    replyTo: 'devopstrainingblr@gmail.com'
+stages {
+    
+stage('check out code') {
+steps {
+ git credentialsId: 'e0e91656-881b-4e6c-a045-0d113dff0754',
+            url: 'https://github.com/g7007226-lab/maven-web-application'
+}
+}
+
+stage('building package'){
+steps {
+sh "mvn clean package"
+}
+}
+
+stage('creating report'){
+steps {
+        withSonarQubeEnv('SonarQube') {
+            sh "mvn sonar:sonar"
+}
+}
+}
+
+stage ('storing artifacats') {
+steps {
+sh "mvn deploy"
+}
+} 
+stage ('publishing the app'){
+    steps {
+        deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: '5f400706-e3d4-4ed2-a169-13b692484bc5', path: '', url: 'http://suji-1483923190.us-east-1.elb.amazonaws.com:8080')], war: 'target/maven-web-application.war'
     }
-  }
+} 
+}
+options {
+  buildDiscarder logRotator(artifactDaysToKeepStr: '5', artifactNumToKeepStr: '5', daysToKeepStr: '5', numToKeepStr: '5')
+}
 }
