@@ -4,7 +4,7 @@
 	<groupId>com.mt</groupId>
 	<artifactId>maven-web-application</artifactId>
 	<packaging>war</packaging>
-	<version>1.0.7</version>
+	<version>1.0.8-SNAPSHOT</version>
 	
 	<name>maven-web-application</name>
 
@@ -34,7 +34,7 @@
     <connection>scm:git:ssh://git@github.com/g7007226-lab/maven-web-application.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/g7007226-lab/maven-web-application.git</developerConnection>
     <url>https://github.com/g7007226-lab/maven-web-application</url>
-    <tag>maven-web-application-1.0.7</tag>
+    <tag>HEAD</tag>
 </scm>
 
 	<dependencies>
