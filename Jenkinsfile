@@ -1,9 +1,10 @@
 pipeline {
-agent any
+agent { label 'slaves' }
 tools {
     maven "Suji" } // maven3.9.12 version configured as Suji
 options {
-  timestamps
+  timestamps ()
+      buildDiscarder logRotator(artifactDaysToKeepStr: '5', artifactNumToKeepStr: '5', daysToKeepStr: '5', numToKeepStr: '5')
 }
 
 stages {
@@ -39,8 +40,5 @@ stage ('publishing the app'){
         deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: '5f400706-e3d4-4ed2-a169-13b692484bc5', path: '', url: 'http://suji-1483923190.us-east-1.elb.amazonaws.com:8080')], war: 'target/maven-web-application.war'
     }
 } 
-}
-options {
-  buildDiscarder logRotator(artifactDaysToKeepStr: '5', artifactNumToKeepStr: '5', daysToKeepStr: '5', numToKeepStr: '5')
 }
 }
