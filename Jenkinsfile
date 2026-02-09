@@ -1,5 +1,6 @@
 pipeline {
-agent any
+agent {
+    label 'slaves' }
 tools {
     maven "Suji" } // maven3.9.12 version configured as Suji
 options {
